@@ -1,0 +1,34 @@
+{
+  "module_id": "customer",
+  "name": "Customer Management",
+  "name_es": "Gestión de Clientes",
+  "version": "1.0.0",
+  "description": "Manage customer with purchase history and statistics",
+  "description_es": "Gestión de clientes con historial de compras y estadísticas",
+  "author": "Ioan Beilic",
+  "author_email": "support@erplora.com",
+  "license": "MIT",
+  "category": "crm",
+  "icon": "people-outline",
+  "dependencies": {
+    "python": [],
+    "modules": []
+  },
+  "compatibility": {
+    "min_erplora_version": "1.0.0",
+    "max_erplora_version": "2.0.0"
+  },
+  "menu": {
+    "label": "Clientes",
+    "label_es": "Clientes",
+    "icon": "people-outline",
+    "order": 10,
+    "url": "/modules/customer/"
+  },
+  "permissions": [
+    "customer.view_customer",
+    "customer.add_customer",
+    "customer.change_customer",
+    "customer.delete_customer"
+  ]
+}

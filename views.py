@@ -13,6 +13,7 @@ from .models import Customer
 def customer_list(request):
     """
     Vista principal de listado de clientes.
+    Soporta HTMX para navegación SPA.
     """
     # Stats for dashboard cards
     total_customers = Customer.objects.filter(is_active=True).count()
@@ -21,9 +22,14 @@ def customer_list(request):
     context = {
         'total_customers': total_customers,
         'inactive_customers': inactive_customers,
-        'page_title': 'Customers',
+        'page_title': _('Clientes'),
     }
-    return render(request, 'customers/list.html', context)
+
+    # Si es petición HTMX, devolver solo el contenido
+    if request.headers.get('HX-Request'):
+        return render(request, 'customer/partials/list_content.html', context)
+
+    return render(request, 'customer/pages/list.html', context)
 
 
 @require_http_methods(["GET"])
@@ -78,6 +84,7 @@ def customer_list_ajax(request):
 def customer_create(request):
     """
     Vista para crear un nuevo cliente.
+    Soporta HTMX para navegación SPA.
     """
     if request.method == 'POST':
         try:
@@ -91,7 +98,7 @@ def customer_create(request):
 
             # Validate
             if not name:
-                return JsonResponse({'success': False, 'error': 'Name is required'})
+                return JsonResponse({'success': False, 'error': _('El nombre es obligatorio')})
 
             # Create customer
             customer = Customer.objects.create(
@@ -105,7 +112,7 @@ def customer_create(request):
 
             return JsonResponse({
                 'success': True,
-                'message': _('Customer created successfully'),
+                'message': _('Cliente creado correctamente'),
                 'customer_id': customer.id
             })
 
@@ -113,15 +120,22 @@ def customer_create(request):
             return JsonResponse({'success': False, 'error': str(e)})
 
     context = {
-        'page_title': 'Create Customer',
+        'page_title': _('Nuevo Cliente'),
+        'customer': None,
     }
-    return render(request, 'customers/form.html', context)
+
+    # Si es petición HTMX, devolver solo el contenido
+    if request.headers.get('HX-Request'):
+        return render(request, 'customer/partials/form_content.html', context)
+
+    return render(request, 'customer/pages/form.html', context)
 
 
 @require_http_methods(["GET"])
 def customer_detail(request, customer_id):
     """
     Vista de detalle de un cliente.
+    Soporta HTMX para navegación SPA.
     """
     customer = get_object_or_404(Customer, id=customer_id)
 
@@ -131,15 +145,21 @@ def customer_detail(request, customer_id):
     context = {
         'customer': customer,
         'recent_purchases': recent_purchases,
-        'page_title': f'Customer: {customer.name}',
+        'page_title': f'{_("Cliente")}: {customer.name}',
     }
-    return render(request, 'customers/detail.html', context)
+
+    # Si es petición HTMX, devolver solo el contenido
+    if request.headers.get('HX-Request'):
+        return render(request, 'customer/partials/detail_content.html', context)
+
+    return render(request, 'customer/pages/detail.html', context)
 
 
 @require_http_methods(["GET", "POST"])
 def customer_edit(request, customer_id):
     """
     Vista para editar un cliente.
+    Soporta HTMX para navegación SPA.
     """
     customer = get_object_or_404(Customer, id=customer_id)
 
@@ -156,13 +176,13 @@ def customer_edit(request, customer_id):
 
             # Validate
             if not customer.name:
-                return JsonResponse({'success': False, 'error': 'Name is required'})
+                return JsonResponse({'success': False, 'error': _('El nombre es obligatorio')})
 
             customer.save()
 
             return JsonResponse({
                 'success': True,
-                'message': _('Customer updated successfully')
+                'message': _('Cliente actualizado correctamente')
             })
 
         except Exception as e:
@@ -170,9 +190,14 @@ def customer_edit(request, customer_id):
 
     context = {
         'customer': customer,
-        'page_title': f'Edit: {customer.name}',
+        'page_title': f'{_("Editar")}: {customer.name}',
     }
-    return render(request, 'customers/form.html', context)
+
+    # Si es petición HTMX, devolver solo el contenido
+    if request.headers.get('HX-Request'):
+        return render(request, 'customer/partials/form_content.html', context)
+
+    return render(request, 'customer/pages/form.html', context)
 
 
 @require_http_methods(["POST"])
@@ -187,7 +212,7 @@ def customer_delete(request, customer_id):
 
         return JsonResponse({
             'success': True,
-            'message': _('Customer deactivated successfully')
+            'message': _('Cliente desactivado correctamente')
         })
 
     except Exception as e:

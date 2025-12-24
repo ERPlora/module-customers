@@ -1,0 +1,194 @@
+{% load i18n %}
+
+{% if request.htmx %}
+<!-- Tab bar update via OOB swap (only on HTMX navigation) -->
+<div id="dashboard-tabbar" hx-swap-oob="innerHTML">
+<ion-footer>
+{% include "customer/partials/tabbar_customer.html" %}
+</ion-footer>
+</div>
+{% endif %}
+
+<div class="p-4">
+    <!-- Header with back button -->
+    <div class="flex items-center gap-4 mb-6">
+        <ion-button fill="clear"
+                    hx-get="{% url 'customer:list' %}"
+                    hx-target="#dashboard-content"
+                    hx-push-url="true">
+            <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+        <div class="flex-1">
+            <h1 class="text-2xl font-bold" style="color: var(--ion-text-color);">{{ customer.name }}</h1>
+            <p class="text-sm" style="color: var(--ion-color-medium);">
+                {% if customer.is_active %}
+                    <ion-badge color="success">{% trans "Activo" %}</ion-badge>
+                {% else %}
+                    <ion-badge color="medium">{% trans "Inactivo" %}</ion-badge>
+                {% endif %}
+                {% if customer.tax_id %} | {{ customer.tax_id }}{% endif %}
+            </p>
+        </div>
+        <ion-button
+            hx-get="{% url 'customer:edit' customer_id=customer.id %}"
+            hx-target="#dashboard-content"
+            hx-push-url="true">
+            <ion-icon slot="start" name="create-outline"></ion-icon>
+            {% trans "Editar" %}
+        </ion-button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column: Customer Info -->
+        <div class="lg:col-span-1">
+            <!-- Contact Card -->
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>{% trans "Información de Contacto" %}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-list lines="none">
+                        <ion-item>
+                            <ion-icon name="call-outline" slot="start" style="color: var(--ion-color-primary);"></ion-icon>
+                            <ion-label>
+                                <p style="color: var(--ion-color-medium);">{% trans "Teléfono" %}</p>
+                                <h3 style="color: var(--ion-text-color);">{{ customer.phone|default:"—" }}</h3>
+                            </ion-label>
+                            {% if customer.phone %}
+                            <ion-button slot="end" fill="clear" href="tel:{{ customer.phone }}">
+                                <ion-icon slot="icon-only" name="call"></ion-icon>
+                            </ion-button>
+                            {% endif %}
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-icon name="mail-outline" slot="start" style="color: var(--ion-color-primary);"></ion-icon>
+                            <ion-label>
+                                <p style="color: var(--ion-color-medium);">{% trans "Email" %}</p>
+                                <h3 style="color: var(--ion-text-color);">{{ customer.email|default:"—" }}</h3>
+                            </ion-label>
+                            {% if customer.email %}
+                            <ion-button slot="end" fill="clear" href="mailto:{{ customer.email }}">
+                                <ion-icon slot="icon-only" name="mail"></ion-icon>
+                            </ion-button>
+                            {% endif %}
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-icon name="location-outline" slot="start" style="color: var(--ion-color-primary);"></ion-icon>
+                            <ion-label>
+                                <p style="color: var(--ion-color-medium);">{% trans "Dirección" %}</p>
+                                <h3 style="color: var(--ion-text-color); white-space: pre-wrap;">{{ customer.address|default:"—" }}</h3>
+                            </ion-label>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-icon name="document-text-outline" slot="start" style="color: var(--ion-color-primary);"></ion-icon>
+                            <ion-label>
+                                <p style="color: var(--ion-color-medium);">{% trans "NIF/CIF" %}</p>
+                                <h3 style="color: var(--ion-text-color);">{{ customer.tax_id|default:"—" }}</h3>
+                            </ion-label>
+                        </ion-item>
+                    </ion-list>
+                </ion-card-content>
+            </ion-card>
+
+            <!-- Notes Card -->
+            {% if customer.notes %}
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>{% trans "Notas" %}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <p style="color: var(--ion-text-color); white-space: pre-wrap;">{{ customer.notes }}</p>
+                </ion-card-content>
+            </ion-card>
+            {% endif %}
+
+            <!-- Dates Card -->
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>{% trans "Fechas" %}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-list lines="none">
+                        <ion-item>
+                            <ion-icon name="calendar-outline" slot="start" style="color: var(--ion-color-medium);"></ion-icon>
+                            <ion-label>
+                                <p style="color: var(--ion-color-medium);">{% trans "Cliente desde" %}</p>
+                                <h3 style="color: var(--ion-text-color);">{{ customer.created_at|date:"d/m/Y" }}</h3>
+                            </ion-label>
+                        </ion-item>
+                        <ion-item>
+                            <ion-icon name="time-outline" slot="start" style="color: var(--ion-color-medium);"></ion-icon>
+                            <ion-label>
+                                <p style="color: var(--ion-color-medium);">{% trans "Última actualización" %}</p>
+                                <h3 style="color: var(--ion-text-color);">{{ customer.updated_at|date:"d/m/Y H:i" }}</h3>
+                            </ion-label>
+                        </ion-item>
+                    </ion-list>
+                </ion-card-content>
+            </ion-card>
+        </div>
+
+        <!-- Right Column: Stats & History -->
+        <div class="lg:col-span-2">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <ion-card>
+                    <ion-card-content class="text-center">
+                        <ion-icon name="cash-outline" style="font-size: 32px; color: var(--ion-color-success);"></ion-icon>
+                        <p class="text-sm mt-2" style="color: var(--ion-color-medium);">{% trans "Total Gastado" %}</p>
+                        <p class="text-2xl font-bold" style="color: var(--ion-color-success);">{{ customer.total_spent|floatformat:2 }} €</p>
+                    </ion-card-content>
+                </ion-card>
+
+                <ion-card>
+                    <ion-card-content class="text-center">
+                        <ion-icon name="repeat-outline" style="font-size: 32px; color: var(--ion-color-primary);"></ion-icon>
+                        <p class="text-sm mt-2" style="color: var(--ion-color-medium);">{% trans "Visitas" %}</p>
+                        <p class="text-2xl font-bold" style="color: var(--ion-color-primary);">{{ customer.visit_count }}</p>
+                    </ion-card-content>
+                </ion-card>
+
+                <ion-card>
+                    <ion-card-content class="text-center">
+                        <ion-icon name="analytics-outline" style="font-size: 32px; color: var(--ion-color-tertiary);"></ion-icon>
+                        <p class="text-sm mt-2" style="color: var(--ion-color-medium);">{% trans "Media por Compra" %}</p>
+                        <p class="text-2xl font-bold" style="color: var(--ion-color-tertiary);">{{ customer.average_purchase|floatformat:2 }} €</p>
+                    </ion-card-content>
+                </ion-card>
+            </div>
+
+            <!-- Recent Purchases -->
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>{% trans "Compras Recientes" %}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content class="p-0">
+                    {% if recent_purchases %}
+                    <ion-list>
+                        {% for sale in recent_purchases %}
+                        <ion-item>
+                            <ion-icon name="receipt-outline" slot="start" style="color: var(--ion-color-primary);"></ion-icon>
+                            <ion-label>
+                                <h2 style="color: var(--ion-text-color);">{% trans "Venta" %} #{{ sale.id }}</h2>
+                                <p style="color: var(--ion-color-medium);">{{ sale.created_at|date:"d/m/Y H:i" }}</p>
+                            </ion-label>
+                            <ion-note slot="end" style="font-size: 1rem; font-weight: 600; color: var(--ion-color-success);">
+                                {{ sale.total|floatformat:2 }} €
+                            </ion-note>
+                        </ion-item>
+                        {% endfor %}
+                    </ion-list>
+                    {% else %}
+                    <div class="text-center py-8" style="color: var(--ion-color-medium);">
+                        <ion-icon name="cart-outline" style="font-size: 48px;"></ion-icon>
+                        <p class="mt-2">{% trans "Sin compras registradas" %}</p>
+                    </div>
+                    {% endif %}
+                </ion-card-content>
+            </ion-card>
+        </div>
+    </div>
+</div>

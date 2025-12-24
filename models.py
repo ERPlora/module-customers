@@ -37,7 +37,7 @@ class Customer(models.Model):
     last_purchase_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Last Purchase"))
 
     class Meta:
-        app_label = 'customers'
+        app_label = 'customer'
         verbose_name = _("Customer")
         verbose_name_plural = _("Customers")
         ordering = ['-created_at']

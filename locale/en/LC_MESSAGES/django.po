@@ -1,4 +1,4 @@
-# Spanish translations for Customers module.
+# English translations for Customers module.
 # Copyright (C) 2025 ERPlora
 # This file is distributed under the same license as the ERPlora package.
 #
@@ -9,81 +9,80 @@ msgstr ""
 "POT-Creation-Date: 2025-12-25 00:00+0000\n"
 "PO-Revision-Date: 2025-12-25 00:00+0000\n"
 "Last-Translator: ERPlora Team\n"
-"Language-Team: Spanish\n"
-"Language: es\n"
+"Language-Team: English\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: customers/models.py
 msgid "Name"
-msgstr "Nombre"
+msgstr "Name"
 
 #: customers/models.py
 msgid "Email"
-msgstr "Correo electrónico"
+msgstr "Email"
 
 #: customers/models.py
 msgid "Phone"
-msgstr "Teléfono"
+msgstr "Phone"
 
 #: customers/models.py
 msgid "Address"
-msgstr "Dirección"
+msgstr "Address"
 
 #: customers/models.py
 msgid "Tax ID"
-msgstr "NIF/CIF"
+msgstr "Tax ID"
 
 #: customers/models.py
 msgid "DNI/NIF/CIF/VAT Number"
-msgstr "DNI/NIF/CIF/IVA"
+msgstr "DNI/NIF/CIF/VAT Number"
 
 #: customers/models.py
 msgid "Total Spent"
-msgstr "Total gastado"
+msgstr "Total Spent"
 
 #: customers/models.py
 msgid "Visit Count"
-msgstr "Número de visitas"
+msgstr "Visit Count"
 
 #: customers/models.py
 msgid "Notes"
-msgstr "Notas"
+msgstr "Notes"
 
 #: customers/models.py
 msgid "Active"
-msgstr "Activo"
+msgstr "Active"
 
 #: customers/models.py
 msgid "Created At"
-msgstr "Creado"
+msgstr "Created At"
 
 #: customers/models.py
 msgid "Updated At"
-msgstr "Actualizado"
+msgstr "Updated At"
 
 #: customers/models.py
 msgid "Last Purchase"
-msgstr "Última compra"
+msgstr "Last Purchase"
 
 #: customers/models.py
 msgid "Customer"
-msgstr "Cliente"
+msgstr "Customer"
 
 #: customers/models.py
 msgid "Customers"
-msgstr "Clientes"
+msgstr "Customers"
 
 #: customers/views.py
 msgid "Customer created successfully"
-msgstr "Cliente creado correctamente"
+msgstr "Customer created successfully"
 
 #: customers/views.py
 msgid "Customer updated successfully"
-msgstr "Cliente actualizado correctamente"
+msgstr "Customer updated successfully"
 
 #: customers/views.py
 msgid "Customer deactivated successfully"
-msgstr "Cliente desactivado correctamente"
+msgstr "Customer deactivated successfully"

@@ -4,7 +4,7 @@
 <!-- Tab bar update via OOB swap (only on HTMX navigation) -->
 <div id="dashboard-tabbar" hx-swap-oob="innerHTML">
 <ion-footer>
-{% include "customer/partials/tabbar_customer.html" with current_view='list' %}
+{% include "customers/partials/tabbar_customer.html" with current_view='list' %}
 </ion-footer>
 </div>
 {% endif %}
@@ -93,7 +93,7 @@
                     <p class="mt-4">{% trans "No se encontraron clientes" %}</p>
                     <ion-button
                         class="mt-4"
-                        hx-get="{% url 'customer:create' %}"
+                        hx-get="{% url 'customers:create' %}"
                         hx-target="#dashboard-content"
                         hx-push-url="true">
                         <ion-icon slot="start" name="person-add-outline"></ion-icon>
@@ -147,14 +147,14 @@
                                     <td class="px-4 py-3">
                                         <div class="flex gap-1 justify-center">
                                             <ion-button size="small" fill="clear"
-                                                        :hx-get="'/modules/customer/' + customer.id + '/'"
+                                                        :hx-get="'/modules/customers/' + customer.id + '/'"
                                                         hx-target="#dashboard-content"
                                                         hx-push-url="true"
                                                         title="{% trans 'Ver' %}">
                                                 <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
                                             </ion-button>
                                             <ion-button size="small" fill="clear"
-                                                        :hx-get="'/modules/customer/' + customer.id + '/edit/'"
+                                                        :hx-get="'/modules/customers/' + customer.id + '/edit/'"
                                                         hx-target="#dashboard-content"
                                                         hx-push-url="true"
                                                         title="{% trans 'Editar' %}">
@@ -204,7 +204,7 @@ function customerList() {
                     search: this.searchQuery,
                     status: this.statusFilter
                 });
-                const response = await fetch(`{% url 'customer:list_ajax' %}?${params}`);
+                const response = await fetch(`{% url 'customers:list_ajax' %}?${params}`);
                 const data = await response.json();
                 if (data.success) {
                     this.customers = data.customers;
@@ -239,7 +239,7 @@ function customerList() {
                     role: 'destructive',
                     handler: async () => {
                         try {
-                            const response = await fetch(`/modules/customer/${customer.id}/delete/`, {
+                            const response = await fetch(`/modules/customers/${customer.id}/delete/`, {
                                 method: 'POST',
                                 headers: {
                                     'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '{{ csrf_token }}'

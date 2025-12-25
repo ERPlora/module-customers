@@ -27,9 +27,9 @@ def customer_list(request):
 
     # Si es petición HTMX, devolver solo el contenido
     if request.headers.get('HX-Request'):
-        return render(request, 'customer/partials/list_content.html', context)
+        return render(request, 'customers/partials/list_content.html', context)
 
-    return render(request, 'customer/pages/list.html', context)
+    return render(request, 'customers/pages/list.html', context)
 
 
 @require_http_methods(["GET"])
@@ -126,9 +126,9 @@ def customer_create(request):
 
     # Si es petición HTMX, devolver solo el contenido
     if request.headers.get('HX-Request'):
-        return render(request, 'customer/partials/form_content.html', context)
+        return render(request, 'customers/partials/form_content.html', context)
 
-    return render(request, 'customer/pages/form.html', context)
+    return render(request, 'customers/pages/form.html', context)
 
 
 @require_http_methods(["GET"])
@@ -150,9 +150,9 @@ def customer_detail(request, customer_id):
 
     # Si es petición HTMX, devolver solo el contenido
     if request.headers.get('HX-Request'):
-        return render(request, 'customer/partials/detail_content.html', context)
+        return render(request, 'customers/partials/detail_content.html', context)
 
-    return render(request, 'customer/pages/detail.html', context)
+    return render(request, 'customers/pages/detail.html', context)
 
 
 @require_http_methods(["GET", "POST"])
@@ -195,9 +195,9 @@ def customer_edit(request, customer_id):
 
     # Si es petición HTMX, devolver solo el contenido
     if request.headers.get('HX-Request'):
-        return render(request, 'customer/partials/form_content.html', context)
+        return render(request, 'customers/partials/form_content.html', context)
 
-    return render(request, 'customer/pages/form.html', context)
+    return render(request, 'customers/pages/form.html', context)
 
 
 @require_http_methods(["POST"])

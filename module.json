@@ -1,5 +1,5 @@
 {
-  "module_id": "customer",
+  "module_id": "customers",
   "name": "Customer Management",
   "name_es": "Gestión de Clientes",
   "version": "1.0.0",
@@ -23,12 +23,12 @@
     "label_es": "Clientes",
     "icon": "people-outline",
     "order": 10,
-    "url": "/modules/customer/"
+    "url": "/modules/customers/"
   },
   "permissions": [
-    "customer.view_customer",
-    "customer.add_customer",
-    "customer.change_customer",
-    "customer.delete_customer"
+    "customers.view_customer",
+    "customers.add_customer",
+    "customers.change_customer",
+    "customers.delete_customer"
   ]
 }

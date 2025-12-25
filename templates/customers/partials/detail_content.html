@@ -4,7 +4,7 @@
 <!-- Tab bar update via OOB swap (only on HTMX navigation) -->
 <div id="dashboard-tabbar" hx-swap-oob="innerHTML">
 <ion-footer>
-{% include "customer/partials/tabbar_customer.html" %}
+{% include "customers/partials/tabbar_customer.html" %}
 </ion-footer>
 </div>
 {% endif %}
@@ -13,7 +13,7 @@
     <!-- Header with back button -->
     <div class="flex items-center gap-4 mb-6">
         <ion-button fill="clear"
-                    hx-get="{% url 'customer:list' %}"
+                    hx-get="{% url 'customers:list' %}"
                     hx-target="#dashboard-content"
                     hx-push-url="true">
             <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
@@ -30,7 +30,7 @@
             </p>
         </div>
         <ion-button
-            hx-get="{% url 'customer:edit' customer_id=customer.id %}"
+            hx-get="{% url 'customers:edit' customer_id=customer.id %}"
             hx-target="#dashboard-content"
             hx-push-url="true">
             <ion-icon slot="start" name="create-outline"></ion-icon>

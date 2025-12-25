@@ -2,7 +2,7 @@
 
 <ion-tab-bar>
     <ion-tab-button
-        hx-get="{% url 'customer:list' %}"
+        hx-get="{% url 'customers:list' %}"
         hx-target="#dashboard-content"
         hx-push-url="true"
         class="{% if current_view == 'list' %}tab-selected{% endif %}">
@@ -11,7 +11,7 @@
     </ion-tab-button>
 
     <ion-tab-button
-        hx-get="{% url 'customer:create' %}"
+        hx-get="{% url 'customers:create' %}"
         hx-target="#dashboard-content"
         hx-push-url="true"
         class="{% if current_view == 'create' %}tab-selected{% endif %}">
@@ -20,7 +20,7 @@
     </ion-tab-button>
 
     <ion-tab-button
-        href="{% url 'customer:export' %}">
+        href="{% url 'customers:export' %}">
         <ion-icon name="download-outline"></ion-icon>
         <ion-label>{% trans "Exportar" %}</ion-label>
     </ion-tab-button>

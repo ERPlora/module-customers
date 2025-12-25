@@ -9,6 +9,7 @@
   "author_email": "support@erplora.com",
   "license": "MIT",
   "category": "crm",
+  "tags": ["customers", "crm", "contacts", "clients", "management"],
   "icon": "people-outline",
   "dependencies": {
     "python": [],

@@ -1,15 +1,15 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.db.models import Q
-from django.contrib import messages
 from django.utils.translation import gettext as _
-import json
 
+from apps.core.htmx import htmx_view
 from .models import Customer
 
 
 @require_http_methods(["GET"])
+@htmx_view('customers/pages/list.html', 'customers/partials/list_content.html')
 def customer_list(request):
     """
     Vista principal de listado de clientes.
@@ -19,17 +19,11 @@ def customer_list(request):
     total_customers = Customer.objects.filter(is_active=True).count()
     inactive_customers = Customer.objects.filter(is_active=False).count()
 
-    context = {
+    return {
         'total_customers': total_customers,
         'inactive_customers': inactive_customers,
         'page_title': _('Clientes'),
     }
-
-    # Si es petición HTMX, devolver solo el contenido
-    if request.headers.get('HX-Request'):
-        return render(request, 'customers/partials/list_content.html', context)
-
-    return render(request, 'customers/pages/list.html', context)
 
 
 @require_http_methods(["GET"])
@@ -81,6 +75,7 @@ def customer_list_ajax(request):
 
 
 @require_http_methods(["GET", "POST"])
+@htmx_view('customers/pages/form.html', 'customers/partials/form_content.html')
 def customer_create(request):
     """
     Vista para crear un nuevo cliente.
@@ -119,19 +114,14 @@ def customer_create(request):
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
 
-    context = {
+    return {
         'page_title': _('Nuevo Cliente'),
         'customer': None,
     }
 
-    # Si es petición HTMX, devolver solo el contenido
-    if request.headers.get('HX-Request'):
-        return render(request, 'customers/partials/form_content.html', context)
-
-    return render(request, 'customers/pages/form.html', context)
-
 
 @require_http_methods(["GET"])
+@htmx_view('customers/pages/detail.html', 'customers/partials/detail_content.html')
 def customer_detail(request, customer_id):
     """
     Vista de detalle de un cliente.
@@ -142,20 +132,15 @@ def customer_detail(request, customer_id):
     # Get recent purchases
     recent_purchases = customer.get_recent_purchases(limit=10)
 
-    context = {
+    return {
         'customer': customer,
         'recent_purchases': recent_purchases,
         'page_title': f'{_("Cliente")}: {customer.name}',
     }
 
-    # Si es petición HTMX, devolver solo el contenido
-    if request.headers.get('HX-Request'):
-        return render(request, 'customers/partials/detail_content.html', context)
-
-    return render(request, 'customers/pages/detail.html', context)
-
 
 @require_http_methods(["GET", "POST"])
+@htmx_view('customers/pages/form.html', 'customers/partials/form_content.html')
 def customer_edit(request, customer_id):
     """
     Vista para editar un cliente.
@@ -188,16 +173,10 @@ def customer_edit(request, customer_id):
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
 
-    context = {
+    return {
         'customer': customer,
         'page_title': f'{_("Editar")}: {customer.name}',
     }
-
-    # Si es petición HTMX, devolver solo el contenido
-    if request.headers.get('HX-Request'):
-        return render(request, 'customers/partials/form_content.html', context)
-
-    return render(request, 'customers/pages/form.html', context)
 
 
 @require_http_methods(["POST"])
